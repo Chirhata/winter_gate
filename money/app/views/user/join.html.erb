@@ -1,0 +1,22 @@
+<div class="join top-main">
+  <div class="join message">
+    <h1>新規ユーザー登録フォーム</h1>
+    <h2>新規登録された場合、<%= link_to("利用規約", "/home/rule") %>に同意したものとみなします。</h2>
+    <h2><%= link_to(" ログインはこちら", "/user/login") %></h2>
+  </div>
+  <% if flash[:notice] %>
+    <div class="flash_message">
+      <%= flash[:notice] %>
+    </div>
+  <% end %>
+  <div class="join_form">
+    <%=form_tag("/user/sign_in") do%>
+      <p>ユーザー名</p>
+      <input name="name">
+      <p>メールアドレス</p>
+      <input name="email">
+      <p></p>
+      <input type="submit" value="登録">
+    <%end%>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+// Place all the styles related to the home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+//////////////flash
+.flash_message{
+    padding: 0px 0px 0px 0px;
+    color: red;
+    text-align: center;
+    font-size: 25px;
+}
+/////////////join
+.join_form{
+    font-size: 35px;
+    margin:-20px 0px -20px 0px; 
+}
+.join_form input{
+    width: 200px;
+    height: 20px;
+    margin:-20px 0px -20px 0px; 
+}
+.join_form input[type="submit"]{
+    width: 100px;
+    height: 40px;
+    color: white;
+    background-color: green;
+    font-size: 20px;
+}
