@@ -5,8 +5,9 @@ Rails.application.routes.draw do
   get "home/rule"=>"home#rule"
   get "user/login"=>"user#login"
   get "user/join"=>"user#join"
+  get "user/question"=>"user#question"
+  post "user/mail_check"=>"user#mail_check"
   post "user/sign_in"=>"user#sign_in"
-  get "user/set_password"=>"user#set_password"
-  post "user/password"=>"user#password"
-
+  post "user/login_check"=>"user#login_check"
+  post "user/logout"=>"user#logout"
 end

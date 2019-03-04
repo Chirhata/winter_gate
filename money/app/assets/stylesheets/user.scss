@@ -9,20 +9,24 @@
     text-align: center;
     font-size: 25px;
 }
-/////////////join
-.join_form{
-    font-size: 35px;
+/////////////form
+.form{
+    font-size: 25px;
     margin:-20px 0px -20px 0px; 
 }
-.join_form input{
+.form input{
     width: 200px;
     height: 20px;
-    margin:-20px 0px -20px 0px; 
+    margin:0px 0px -20px 0px; 
 }
-.join_form input[type="submit"]{
+.form input[type="submit"]{
     width: 100px;
     height: 40px;
     color: white;
     background-color: green;
     font-size: 20px;
+}
+.question_link{
+    margin:100px 0px 0px 0px; 
+    font-size: 15px;
 }

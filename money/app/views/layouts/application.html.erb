@@ -21,9 +21,15 @@
         <li>
             <%= link_to("利用規約", "/home/rule") %>
         </li>
+        <%if session[:user_mail]%>
         <li>
-            <%= link_to("ログイン", "/user/login") %>
+          <%= link_to("ログアウト", "/user/logout",{method: :post}) %>
         </li>
+        <%else%>
+        <li>
+          <%= link_to("ログイン", "/user/login") %>
+        </li>
+        <%end%>
       </ul>
     </header>
     <%= yield %>

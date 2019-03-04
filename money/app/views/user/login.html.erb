@@ -1,6 +1,24 @@
 <div class="login top-main">
-  <div class="login_message">
-    <h1>ログインフォーム建設予定地</h1>
-    <h1><%= link_to("新規登録はこちらw", "/user/join") %></h1>
+  <div class="login message">
+    <h1>メールアドレスとパスワードを入力してください</h1>
+    <h1><%= link_to("新規登録はこちら", "/user/join") %></h1>
+  </div>
+  <% if flash[:notice] %>
+    <div class="flash_message">
+      <%= flash[:notice] %>
+    </div>
+  <% end %>
+  <div class="login form">
+  <%=form_tag("/user/login_check") do%>
+    <p>メールアドレス</p>
+    <input name="email">
+    <p>パスワード</p>
+    <input name="o_password" type="password">
+    <p></p>
+    <input type="submit" value="ログイン">
+  <%end%>
+  </div>
+  <div class="login question_link">
+    <h1><%= link_to("パスワードを忘れた方はこちら", "/user/question") %></h1>
   </div>
 </div>
