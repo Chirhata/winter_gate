@@ -1,0 +1,17 @@
+<div class="question top-main">
+  <div class="question form">
+    <h2>秘密の質問に解答してください</h2>
+    <% if @error_message %>
+    <div class="error_message">
+      <%= @error_message %>
+    </div>
+    <% end %>
+    <%= form_for @ans,url:{action: :answer_check} do |u|%>
+      <h2><%=@user.question%></h2>
+      <%= u.hidden_field :email, value:@user.email %>
+      <%=u.text_field :answer%>
+      <p></p>
+      <%=u.submit '送信'%>
+    <% end %>
+  </div>
+</div>

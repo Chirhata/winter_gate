@@ -1,25 +1,18 @@
 class UserController < ApplicationController
+  before_action :ban_login_user, {only: [:login, :join, :sign_in, :login_check, :question, :mail_check, :question_ans, :answer_check, :your_password]}
+  before_action :ban_unlogin_user, {only: [:top, :edit_menu, :edit_name, :renew_name, :edit_password, :check_password, :new_password, :renew_password]}
   def login
     flash[:notice] = nil
-    if session[:user_mail]
-      redirect_to("/home/top")
-    end
   end
+
   def join
-    if session[:user_mail]
-      redirect_to("/home/top")
-    end
     flash[:notice] = nil
   end
+
   def sign_in
     flash[:notice] = nil
-    if session[:user_mail]
-      redirect_to("/home/top")
-    end
     @user_data = User.new(name: params[:name], email: params[:email], o_password: params[:o_password], re_password: params[:re_password], question: params[:question], answer: params[:answer])
-    @o_password = User.find_by(o_password: @user_data.o_password)
-    @re_password = User.find_by(re_password: @user_data.re_password)
-    @email = User.find_by(email: @user_data.email)
+    @email = User.find_by(email: params[:email])
     if @user_data.save
       if @user_data.o_password != @user_data.re_password
         flash[:notice] = "入力した二つのパスワードが一致しません。"
@@ -27,8 +20,8 @@ class UserController < ApplicationController
         render("user/join")
       else
         flash[:notice] = nil
-        session[:user_mail] = @user_data.email
-        redirect_to("/home/top")
+        session[:user_id] = @user_data.id
+        redirect_to("/user/#{@user_data.id}/top")
       end
     else
       if @email != nil
@@ -39,51 +32,120 @@ class UserController < ApplicationController
       render("user/join")
     end
   end
+
   def login_check
     flash[:notice] = nil
-    if session[:user_mail]
-      redirect_to("/home/top")
-    end
     @user_data = User.find_by(email: params[:email], o_password: params[:o_password])
     if @user_data
-      session[:user_mail] = @user_data.email
+      session[:user_id] = @user_data.id
       flash[:notice] = nil
-      redirect_to("/home/top")
+      redirect_to("/user/#{@user_data.id}/top")
     else
       flash[:notice] = "メールアドレス、またはパスワードが間違っています。"
       render("user/login")
     end
   end
+
   def logout
-    session[:user_mail] = nil
+    session[:user_id] = nil
     redirect_to("/home/top")
   end
+ 
   def question
-    flash[:notice] = nil
-    if session[:user_mail]
-      redirect_to("/home/top")
+    @user = User.new
+  end
+
+  def mail_check
+    @ans = User.new
+    if User.find_by(email: params[:user][:email])
+      @user = User.find_by(email: params[:user][:email])
+      @error_message = nil
+      render("/user/question_ans")
+    else
+      @user = User.new
+      @error_message = "入力したメールアドレスが間違っています。"
+      render("/user/question")
     end
   end
-  def mail_check
-    if session[:user_mail]
-      redirect_to("/home/top")
-    end
-    @user_data = User.find_by(email: params[:email])
-    if @flag == nil
-      if @user_data
-        @flag = "exist"
-        flash[:notice] = "秘密の質問に解答してください"
-        render("user/question")
-      else
-        flash[:notice] = "メールアドレスが間違っています。"
-        render("user/question")
-      end
+
+  def question_ans
+    @ans = User.find_by(email: @user.email)
+  end
+
+  def answer_check
+    @user = User.find_by(email: params[:user][:email])
+    @ans = User.find_by(email: params[:user][:email])
+    if @ans.answer == params[:user][:answer]
+      @ans = User.new
+      render("/user/your_password")
     else
-      @flag = "exist"
-      if params[:answer] == @user_data.answer
-        flash[:notice] = "正解"
+      @ans = User.new
+      @error_message = "解答が間違っています。"
+      render("/user/question_ans")
+    end
+  end
+
+  def your_password
+    @user = User.find_by(email: params[:user][:email])
+  end
+
+  def top
+  end
+
+  def edit_menu
+  end
+
+  def edit_name
+    @user = User.new
+  end
+
+  def renew_name
+    @user = User.find_by(id: session[:user_id])
+    if params[:user][:name].empty? != true
+      @user.name = params[:user][:name]
+      @user.save
+      redirect_to("/user/#{@user.id}/edit_menu")
+    else
+      @user = User.new
+      @error_message = "名前を１文字以上で入力してください。"
+      render("/user/edit_name")
+    end
+  end
+
+  def edit_password
+    @user = User.new
+  end
+
+  def check_password
+    @user = User.find_by(id: session[:user_id])
+    if @user.o_password == params[:user][:o_password]
+      redirect_to("/user/#{@user.id}/edit_menu/new_password")
+    else
+      @user = User.new
+      @error_message = "パスワードが間違っています。"
+      render("/user/edit_password")
+    end
+  end
+
+  def new_password
+    @user = User.new
+  end
+
+  def renew_password
+    @user = User.find_by(id: session[:user_id])
+    if params[:user][:o_password].empty? == true|| params[:user][:re_password].empty? == true
+      @error_message = "パスワードは１文字以上で入力してください。"
+      render("/user/new_password")
+    else
+      if params[:user][:o_password] == params[:user][:re_password]
+        @user.o_password = params[:user][:o_password]
+        @user.re_password = params[:user][:re_password]
+        @user_save
+        redirect_to("/user/#{@user.id}/edit_menu")
       else
-        flash[:notice] = "回答が間違っています"
+        @user = User.new
+        @error_message = "入力した二つのパスワードが一致しません。"
+        render("/user/new_password")
       end
     end
   end

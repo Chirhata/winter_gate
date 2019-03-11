@@ -3,7 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 //////////////flash
-.flash_message{
+.flash_message,.error_message{
     padding: 0px 0px 0px 0px;
     color: red;
     text-align: center;
@@ -14,7 +14,7 @@
     font-size: 25px;
     margin:-20px 0px -20px 0px; 
 }
-.form input{
+.form input,.form u.text_field{
     width: 200px;
     height: 20px;
     margin:0px 0px -20px 0px; 

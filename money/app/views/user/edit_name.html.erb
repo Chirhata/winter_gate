@@ -1,0 +1,17 @@
+<div class="edit_menu_name top-main">
+  <div class="edit_menu_name form">
+    <h1>新しい名前を入力してください。</h1>
+    <% if @error_message %>
+      <div class="error_message">
+        <%= @error_message %>
+      </div>
+    <% end %>
+    <% @user_name = User.find_by(id: session[:user_id])%>
+    <h2>現在の名前 <%=@user_name.name%></h2>
+    <%= form_for @user,url:{action: :renew_name} do |u|%>
+      <%=u.text_field :name%>
+      <p></p>
+      <%=u.submit '変更'%>
+    <% end %>
+  </div>
+</div>

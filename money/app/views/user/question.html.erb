@@ -1,20 +1,15 @@
 <div class="question top-main">
   <div class="question form">
     <h2>登録したメールアドレスを入力してください</h2>
-    <% if flash[:notice] %>
-      <div class="flash_message">
-        <%= flash[:notice] %>
+    <% if @error_message %>
+      <div class="error_message">
+        <%= @error_message %>
       </div>
     <% end %>
-    <%= form_tag("/user/mail_check") do%>
-      <% if @flag == nil%>
-        <input name="email">
-      <%elsif @flag == "exist"%>
-        <h2><%=@user_data.question%></h2>
-        <input name="answer">
-      <% end %>
+    <%= form_for @user,url:{action: :mail_check} do |u|%>
+      <%=u.text_field :email%>
       <p></p>
-      <input type="submit" value="決定">
+      <%=u.submit '送信'%>
     <% end %>
   </div>
 </div>

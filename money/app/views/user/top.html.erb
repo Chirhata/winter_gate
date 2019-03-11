@@ -1,0 +1,7 @@
+<div class="top top-main">
+  <div class="top message">
+    <% @user_name = User.find_by(id: session[:user_id])%>
+    <h1>うぇーいログインできてるぞー⭐️</h1>
+    <%= link_to("ユーザー設定の変更はこちら", "/user/#{@user_name.id}/edit_menu") %>
+  </div>
+</div>
