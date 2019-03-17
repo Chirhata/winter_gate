@@ -1,5 +1,17 @@
 <div class="money_form top-main">
   <div class="money_form message">
-    <h1>あかさたな</h1>
+  <% if @error_message %>
+  <div class="error_message">
+    <%= @error_message %>
+  </div> 
+  <% end %>
+  <%= form_for @money,url:{action: :tomonth_target} do |m|%>
+    <h2>使った金額を入力してください。</h2>
+    <%= m.date_select :money_limit_day, {:use_month_numbers => true, :start_year => time.year, :end_year => time.year + 100}%>
+    <h2>いくら残すかを設定してください。</h2>
+    <%=m.number_field :money_limit,{:min => 0}%>
+    <p></p>
+    <%=m.submit '送信'%>
+  <% end %>
   </div>
 </div>
