@@ -4,5 +4,7 @@
     <% @user_name = User.find_by(id: session[:user_id])%>
     <%= link_to("名前変更", "/user/#{@user_name.id}/edit_menu/name") %>
     <%= link_to("パスワード変更", "/user/#{@user_name.id}/edit_menu/password") %>
+    <%= link_to("秘密の質問変更", "/user/#{@user_name.id}/edit_menu/question") %>
+    <%= link_to("アカウント削除", "/user/#{@user_name.id}/edit_menu/delete_account") %>
   </div>
 </div>

@@ -1,6 +1,7 @@
 class UserController < ApplicationController
-  before_action :ban_login_user, {only: [:login, :join, :sign_in, :login_check, :question, :mail_check, :question_ans, :answer_check, :your_password]}
-  before_action :ban_unlogin_user, {only: [:top, :edit_menu, :edit_name, :renew_name, :edit_password, :check_password, :new_password, :renew_password]}
+  require "active_support/time"
+  before_action :ban_login_user, {only: [:login, :join, :sign_in, :login_check]}
+  before_action :ban_unlogin_user, {only: [:top, :edit_menu, :edit_name, :renew_name, :edit_password, :renew_password, :edit_question, :renew_quesiton, :delete_account, :delete_check, :final_check, :all_delete]}
   def login
     flash[:notice] = nil
   end
@@ -11,7 +12,8 @@ class UserController < ApplicationController
 
   def sign_in
     flash[:notice] = nil
-    @user_data = User.new(name: params[:name], email: params[:email], o_password: params[:o_password], re_password: params[:re_password], question: params[:question], answer: params[:answer])
+    date = Date.today
+    @user_data = User.new(name: params[:name], email: params[:email], o_password: params[:o_password], re_password: params[:re_password], question: params[:question], answer: params[:answer], money_limit: 0, money_limit_day: date.yesterday)
     @email = User.find_by(email: params[:email])
     if @user_data.save
       if @user_data.o_password != @user_data.re_password
@@ -21,6 +23,8 @@ class UserController < ApplicationController
       else
         flash[:notice] = nil
         session[:user_id] = @user_data.id
+        @user_money_data = MoneyManagement.new(id: @user_data.id, income_and_spending: 0, use_for: "初期データ登録")
+        @user_money_data.save
         redirect_to("/user/#{@user_data.id}/top")
       end
     else
@@ -90,6 +94,7 @@ class UserController < ApplicationController
   end
 
   def top
+    @money = MoneyManagement.new
   end
 
   def edit_menu
@@ -116,10 +121,25 @@ class UserController < ApplicationController
     @user = User.new
   end
 
-  def check_password
+  def renew_password
     @user = User.find_by(id: session[:user_id])
-    if @user.o_password == params[:user][:o_password]
-      redirect_to("/user/#{@user.id}/edit_menu/new_password")
+    if @user.o_password == params[:user][:name]
+      if params[:user][:o_password].empty? == true|| params[:user][:re_password].empty? == true
+        @user = User.new
+        @error_message = "パスワードは１文字以上で入力してください。"
+        render("/user/edit_password")
+      else
+        if params[:user][:o_password] == params[:user][:re_password]
+          @user.o_password = params[:user][:o_password]
+          @user.re_password = params[:user][:re_password]
+          @user.save
+          redirect_to("/user/#{@user.id}/edit_menu")
+        else
+          @user = User.new
+          @error_message = "入力した二つのパスワードが一致しません。"
+          render("/user/edit_password")
+        end
+      end
     else
       @user = User.new
       @error_message = "パスワードが間違っています。"
@@ -127,26 +147,55 @@ class UserController < ApplicationController
     end
   end
 
-  def new_password
+  def edit_question
     @user = User.new
   end
 
-  def renew_password
+  def renew_question
     @user = User.find_by(id: session[:user_id])
-    if params[:user][:o_password].empty? == true|| params[:user][:re_password].empty? == true
-      @error_message = "パスワードは１文字以上で入力してください。"
-      render("/user/new_password")
-    else
-      if params[:user][:o_password] == params[:user][:re_password]
-        @user.o_password = params[:user][:o_password]
-        @user.re_password = params[:user][:re_password]
-        @user_save
-        redirect_to("/user/#{@user.id}/edit_menu")
-      else
+    if @user.o_password == params[:user][:name]
+      if params[:user][:question].empty? == true|| params[:user][:answer].empty? == true
         @user = User.new
-        @error_message = "入力した二つのパスワードが一致しません。"
-        render("/user/new_password")
+        @error_message = "質問と答えは１文字以上で入力してください。"
+        render("/user/edit_question")
+      else
+        @user.question = params[:user][:question]
+        @user.answer = params[:user][:answer]
+        @user.save
+        redirect_to("/user/#{@user.id}/edit_menu")
       end
+    else
+      @user = User.new
+      @error_message = "パスワードが間違っています。"
+      render("/user/edit_question")
     end
+  end
+
+  def delete_account
+    @user = User.new
+  end
+
+  def delete_check
+    @user = User.find_by(id: session[:user_id])
+    if @user.o_password == params[:user][:name]
+      redirect_to("/user/#{@user.id}/edit_menu/final_check")
+    else
+      @user = User.new
+      @error_message = "パスワードが間違っています。"
+      render("/user/delete_account")
+    end
+  end
+
+  def final_check
+    @user = User.new
+  end
+
+  def all_delete
+    @user = User.find_by(id: session[:user_id])
+    @user_money = MoneyManagement.where(id: session[:user_id])
+    @user.destroy
+    @user_money.delete_all
+    session[:user_id] = nil
+    redirect_to("/home/top")
   end
 end

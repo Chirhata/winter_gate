@@ -1,7 +1,23 @@
+<% require "active_support/time" %>
 <div class="top top-main">
   <div class="top message">
     <% @user_name = User.find_by(id: session[:user_id])%>
-    <h1>うぇーいログインできてるぞー⭐️</h1>
+    <% user_tomonth_target = User.find_by(id: session[:user_id]) %>
+
+    <% date = Date.today %>
+    <% if user_tomonth_target.money_limit && user_tomonth_target.money_limit_day && date < user_tomonth_target.money_limit_day%>
+      <h1>あと３日（仮）</h1>
+      <%=date%>
+      <%=user_tomonth_target.money_limit_day%>
+      <%=date < user_tomonth_target.money_limit_day%>
+      <%= link_to("出資入力フォーム", "/money/#{@user_name.id}/form") %>
+    <%else%>
+      <h1>ぷぎゃーwwwwwwwwwww</h1>
+      <%=date%>
+      <%=user_tomonth_target.money_limit_day%>
+      <%=date < user_tomonth_target.money_limit_day%>
+      <%= link_to("今月分の目標額設定フォーム", "/money/#{@user_name.id}/form_tomonth") %>
+    <%end%>
     <%= link_to("ユーザー設定の変更はこちら", "/user/#{@user_name.id}/edit_menu") %>
   </div>
 </div>
