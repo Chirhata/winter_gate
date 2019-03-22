@@ -1,0 +1,11 @@
+require "active_support/time"
+<div class="log top-main">
+  <div class="log message">
+    <% @log = MoneyManagement.where(user_id: session[:user_id]).order(created_at:  :desc) %>
+    <% time = Time.now %>
+    <h1>利用履歴</h1>
+    <% @log.first(100).each do |log| %>
+      <%= log.created_at.strftime('%Y/%m/%d')%> <%= log.income_or_supend%> <%= log.income_and_spending%>円 <%= log.use_for%></br>
+    <%end%>
+  </div>
+</div>

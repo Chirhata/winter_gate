@@ -6,18 +6,20 @@
 
     <% date = Date.today %>
     <% if user_tomonth_target.money_limit && user_tomonth_target.money_limit_day && date < user_tomonth_target.money_limit_day%>
-      <h1>あと３日（仮）</h1>
+      <h1>今使える金額は<%=@user_name.money_limit%>円</h1>
       <%=date%>
       <%=user_tomonth_target.money_limit_day%>
       <%=date < user_tomonth_target.money_limit_day%>
       <%= link_to("出資入力フォーム", "/money/#{@user_name.id}/form") %>
+      <%= link_to("履歴", "/money/#{@user_name.id}/log") %>
+      <%= link_to("目標などの変更", "/money/#{@user_name.id}/edit_target") %>
     <%else%>
-      <h1>ぷぎゃーwwwwwwwwwww</h1>
+      <h1>今月分の目標額を設定しましょう。</h1>
       <%=date%>
       <%=user_tomonth_target.money_limit_day%>
       <%=date < user_tomonth_target.money_limit_day%>
       <%= link_to("今月分の目標額設定フォーム", "/money/#{@user_name.id}/form_tomonth") %>
     <%end%>
-    <%= link_to("ユーザー設定の変更はこちら", "/user/#{@user_name.id}/edit_menu") %>
+    <%= link_to("ユーザー設定の変更", "/user/#{@user_name.id}/edit_menu") %>
   </div>
 </div>

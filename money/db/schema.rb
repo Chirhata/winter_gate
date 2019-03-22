@@ -10,13 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_17_091808) do
+ActiveRecord::Schema.define(version: 2019_03_22_044704) do
 
   create_table "money_managements", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "income_and_spending"
     t.text "use_for"
+    t.integer "user_id"
+    t.text "income_or_supend"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -30,6 +32,8 @@ ActiveRecord::Schema.define(version: 2019_03_17_091808) do
     t.date "money_limit_day"
     t.string "o_password"
     t.string "re_password"
+    t.integer "income"
+    t.integer "money_limit_origin"
   end
 
 end

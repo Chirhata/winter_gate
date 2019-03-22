@@ -1,14 +1,15 @@
 require "active_support/time"
-<div class="money_form_tomonth top-main">
-  <div class="money_form_tomonth message">
+<div class="edit_target top-main">
+  <div class="edit_target message">
     <% time = Time.now %>
-    <h1>今月はいつまでにいくら残しますか？</h1>
+    <h1>目標などの変更フォーム</h1>
+    <h2>変更しない場合空白のままにしてください</h2>
     <% if @error_message %>
     <div class="error_message">
       <%= @error_message %>
     </div> 
     <% end %>
-    <%= form_for @user,url:{action: :tomonth_target} do |m|%>
+    <%= form_for @user,url:{action: :edit_target_save} do |m|%>
       <h2>日付を入力してください。</h2>
       <%= m.date_select :money_limit_day, {:use_month_numbers => true, :start_year => time.year, :end_year => time.year + 100}%>
       <h2>いくら残すかを設定してください。</h2>

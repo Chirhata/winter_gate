@@ -5,11 +5,14 @@
     <%= @error_message %>
   </div> 
   <% end %>
-  <%= form_for @money,url:{action: :tomonth_target} do |m|%>
-    <h2>使った金額を入力してください。</h2>
-    <%= m.date_select :money_limit_day, {:use_month_numbers => true, :start_year => time.year, :end_year => time.year + 100}%>
-    <h2>いくら残すかを設定してください。</h2>
-    <%=m.number_field :money_limit,{:min => 0}%>
+  <%= form_for @money,url:{action: :money_form_save} do |m|%>
+    <label>
+    <%= m.radio_button :income_or_supend, "収入" %> 収入 </label>
+    <label><%= m.radio_button :income_or_supend, "支出" %> 支出 </label>
+    <h2>金額を入力してください。</h2>
+    <%=m.number_field :income_and_spending,{:min => 1, :max => 99999999}%>
+    <h2>用途を入力してください。</h2>
+    <%=m.text_field :use_for%>
     <p></p>
     <%=m.submit '送信'%>
   <% end %>

@@ -5,4 +5,8 @@ class User < ApplicationRecord
     validates :re_password, {presence: true}
     validates :question, {presence: true}
     validates :answer, {presence: true}
+    validates :money_limit, {presence: true}
+    validates :money_limit_day, {presence: true}
+    validates :income, {presence: true}
+    validates :money_limit_origin, {presence: true}
 end

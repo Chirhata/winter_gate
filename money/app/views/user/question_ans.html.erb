@@ -9,7 +9,7 @@
     <%= form_for @ans,url:{action: :answer_check} do |u|%>
       <h2><%=@user.question%></h2>
       <%= u.hidden_field :email, value:@user.email %>
-      <%=u.text_field :answer%>
+      <%= u.text_field :answer %>
       <p></p>
       <%=u.submit '送信'%>
     <% end %>

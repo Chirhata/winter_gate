@@ -16,8 +16,11 @@ Rails.application.routes.draw do
 
   get "money/:id/form"=>"money#money_form"
   get "money/:id/form_tomonth"=>"money#money_form_tomonth"
+  get "money/:id/log"=>"money#log"
+  get "money/:id/edit_target"=>"money#edit_target"
   post "money/:id/form_tomonth"=>"money#tomonth_target"
   post "money/:id/form"=>"money#money_form_save"
+  post "money/:id/edit_target_save"=>"money#edit_target_save"
 
   get "home/about"=>"home#about"
   get "home/rule"=>"home#rule"

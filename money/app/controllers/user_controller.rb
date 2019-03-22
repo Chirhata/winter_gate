@@ -13,7 +13,7 @@ class UserController < ApplicationController
   def sign_in
     flash[:notice] = nil
     date = Date.today
-    @user_data = User.new(name: params[:name], email: params[:email], o_password: params[:o_password], re_password: params[:re_password], question: params[:question], answer: params[:answer], money_limit: 0, money_limit_day: date.yesterday)
+    @user_data = User.new(name: params[:name], email: params[:email], o_password: params[:o_password], re_password: params[:re_password], question: params[:question], answer: params[:answer], money_limit: 0, money_limit_day: date.yesterday, income: 0, money_limit_origin: 0)
     @email = User.find_by(email: params[:email])
     if @user_data.save
       if @user_data.o_password != @user_data.re_password
@@ -192,7 +192,7 @@ class UserController < ApplicationController
 
   def all_delete
     @user = User.find_by(id: session[:user_id])
-    @user_money = MoneyManagement.where(id: session[:user_id])
+    @user_money = MoneyManagement.where(user_id: session[:user_id])
     @user.destroy
     @user_money.delete_all
     session[:user_id] = nil
