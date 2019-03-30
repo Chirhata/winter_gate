@@ -9,8 +9,7 @@ require "active_support/time"
     </div> 
     <% end %>
     <%= form_for @user,url:{action: :tomonth_target} do |m|%>
-      <h2>日付を入力してください。</h2>
-      <%= m.date_select :money_limit_day, {:use_month_numbers => true, :start_year => time.year, :end_year => time.year + 100}%>
+      <%= m.date_select :money_limit_day, class: 'application'%>
       <h2>いくら残すかを設定してください。</h2>
       <%=m.number_field :money_limit,{:min => 1, :max =>99999999}%>
       <h2>予測される今月の支出を入力してください。</h2>

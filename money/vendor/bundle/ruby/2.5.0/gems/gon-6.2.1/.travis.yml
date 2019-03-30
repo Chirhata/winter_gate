@@ -1,0 +1,12 @@
+language: ruby
+sudo: false
+env:
+  - "RABL_GEM=rabl"
+  - "RABL_GEM=rabl-rails"
+
+rvm:
+  - 2.3.3
+  - 2.4.0
+  - ruby-head
+# uncomment this line if your project needs to run something other than `rake`:
+# script: bundle exec rspec spec

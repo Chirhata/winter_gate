@@ -8,7 +8,7 @@
       </div>
     <% end %>
     <%= form_for @user,url:{action: :delete_check} do |u|%>
-      <%=u.text_field :name%>
+      <%=u.password_field :name%>
       <p></p>
       <%=u.submit '送信'%>
     <% end %>

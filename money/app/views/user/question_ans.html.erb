@@ -8,7 +8,7 @@
     <% end %>
     <%= form_for @ans,url:{action: :answer_check} do |u|%>
       <h2><%=@ans.question%></h2>
-      <%= u.text_field :answer %>
+      <%= u.text_field :answer , value:nil%>
       <p></p>
       <%=u.submit '送信'%>
     <% end %>

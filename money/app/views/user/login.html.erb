@@ -3,9 +3,9 @@
     <h1>メールアドレスとパスワードを入力してください</h1>
     <h1><%= link_to("新規登録はこちら", "/user/join") %></h1>
   </div>
-  <% if flash[:notice] %>
-    <div class="flash_message">
-      <%= flash[:notice] %>
+  <% if @error_message %>
+    <div class="error_message">
+      <%= @error_message %>
     </div>
   <% end %>
   <div class="login form">

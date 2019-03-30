@@ -8,7 +8,7 @@
       </div>
     <% end %>
     <%= form_for @user,url:{action: :renew_question} do |u|%>
-      <%=u.text_field :name%>
+      <%=u.password_field :name%>
       <h2>新しい秘密の質問を入力してください。</h2>
       <%=u.text_field :question%>
       <h2>秘密の質問の答えを入力してください。</h2>

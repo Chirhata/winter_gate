@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_30_063818) do
+ActiveRecord::Schema.define(version: 2019_03_30_094717) do
 
   create_table "money_managements", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -30,8 +30,6 @@ ActiveRecord::Schema.define(version: 2019_03_30_063818) do
     t.text "answer"
     t.integer "money_limit"
     t.date "money_limit_day"
-    t.string "o_password"
-    t.string "re_password"
     t.integer "income"
     t.integer "money_limit_origin"
     t.date "money_limit_day_origin"

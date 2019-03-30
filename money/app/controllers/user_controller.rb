@@ -12,37 +12,41 @@ class UserController < ApplicationController
   end
 
   def sign_in
-    flash[:notice] = nil
+    @error_message = nil
     date = Date.today
-    @user_data = User.new(name: params[:name], email: params[:email], o_password: params[:o_password], re_password: params[:re_password], question: params[:question], answer: params[:answer], money_limit: 0, money_limit_day: date.yesterday, income: 0, money_limit_origin: 0, money_limit_day_origin: date.yesterday)
+    @user_data = User.new(name: params[:name], email: params[:email], question: params[:question], answer: params[:answer], money_limit: 0, money_limit_day: date.yesterday, income: 0, money_limit_origin: 0, money_limit_day_origin: date.yesterday)
+    @user_data.password = params[:o_password]
     @email = User.find_by(email: params[:email])
     if @user_data.save
-      if @user_data.o_password != @user_data.re_password
-        flash[:notice] = "入力した二つのパスワードが一致しません。"
+      if params[:o_password] != params[:re_password]
+        @error_message = "入力した二つのパスワードが一致しません。"
         @user_data.destroy
         render("user/join")
         return
       else
-        flash[:notice] = nil
+        @error_message = nil
         session[:user_id] = @user_data.id
         @user_money_data = MoneyManagement.new(id: @user_data.id, income_and_spending: 0, use_for: "初期データ登録")
         @user_money_data.save
         redirect_to("/user/#{@user_data.id}/top")
       end
     else
-      if @email != nil
-        flash[:notice] = "そのメールアドレスはすでに使用されています。"
+      p 1234567890
+      if @user_data.email.empty? == true || @user_data.name.empty? == true || @user_data.question.empty? == true || @user_data.answer.empty? == true || params[:o_password].empty? == true || params[:re_password].empty? == true
+        @error_message = "全てのフォームを埋めてください。"
       else 
-        if @user_data.name.empty? != true
-          flash[:notice] = "名前は２０文字以内にしてください。"
+        if @user_data.name.length > 20
+          @error_message = "名前は２０文字以内にしてください。"
         else 
-          if @user_data.question.empty? != true
-            flash[:notice] = "秘密の質問は１４０文字以内にしてください。"
-          else
-            if @user_data.answer.empty? != true
-              flash[:notice] = "秘密の質問の答えは１４０文字以内にしてください。"
+          if @email
+            @error_message = "そのメールアドレスはすでに使用されています。"
+          else 
+            if @user_data.question.length > 140
+              @error_message = "秘密の質問は１４０文字以内にしてください。"
             else
-              flash[:notice] = "全てのフォームを埋めてください。"
+              if @user_data.answer.length > 140
+                @error_message = "秘密の質問の答えは１４０文字以内にしてください。"
+              end
             end
           end
         end
@@ -53,14 +57,14 @@ class UserController < ApplicationController
   end
 
   def login_check
-    flash[:notice] = nil
-    @user_data = User.find_by(email: params[:email], o_password: params[:o_password])
-    if @user_data
+    @error_message = nil
+    @user_data = User.find_by(email: params[:email])
+    if @user_data && @user_data.authenticate(params[:o_password])
       session[:user_id] = @user_data.id
-      flash[:notice] = nil
+      @error_message = nil
       redirect_to("/user/#{@user_data.id}/top")
     else
-      flash[:notice] = "メールアドレス、またはパスワードが間違っています。"
+      @error_message = "メールアドレス、またはパスワードが間違っています。"
       render("user/login")
     end
   end
@@ -131,17 +135,23 @@ class UserController < ApplicationController
     p "----"
     p @user
     @ans = User.find_by(id: session[:user_data_for_answercheck])
-    @ans.o_password = params[:user][:o_password]
-    @ans.re_password = params[:user][:re_password]
-    if @ans.o_password != @ans.re_password
+    if params[:user][:o_password] != params[:user][:re_password]
       @ans = User.new
       render("/user/your_password")
+      return
     else
-      @ans.save
-      if session[:user_id] == nil
-        redirect_to("/user/login")
+      if params[:user][:o_password].length > 0 || params[:user][:re_password].length > 0
+        @ans = User.new
+        render("/user/your_password")
+        return
       else
-        redirect_to("/user/#{@ans.id}/edit_menu")
+      @ans.password = params[:user][:o_password]
+      @ans.save
+        if session[:user_id] == nil
+          redirect_to("/user/login")
+        else
+          redirect_to("/user/#{@ans.id}/edit_menu")
+        end
       end
     end
   end
@@ -206,7 +216,7 @@ class UserController < ApplicationController
 
   def renew_password
     @user = User.find_by(id: session[:user_id])
-    if @user.o_password == params[:user][:name]
+    if @user.authenticate(params[:user][:name])
       if params[:user][:o_password].empty? == true|| params[:user][:re_password].empty? == true
         @user = User.new
         @error_message = "パスワードは１文字以上で入力してください。"
@@ -214,8 +224,7 @@ class UserController < ApplicationController
         return
       else
         if params[:user][:o_password] == params[:user][:re_password]
-          @user.o_password = params[:user][:o_password]
-          @user.re_password = params[:user][:re_password]
+          @user.password = params[:user][:o_password]
           @user.save
           redirect_to("/user/#{@user.id}/edit_menu")
         else
@@ -239,7 +248,7 @@ class UserController < ApplicationController
 
   def renew_question
     @user = User.find_by(id: session[:user_id])
-    if @user.o_password == params[:user][:name]
+    if @user.authenticate(params[:user][:name])
         @user.question = params[:user][:question]
         @user.answer = params[:user][:answer]
       if @user.save
@@ -264,7 +273,7 @@ class UserController < ApplicationController
 
   def delete_check
     @user = User.find_by(id: session[:user_id])
-    if @user.o_password == params[:user][:name]
+    if @user.authenticate(params[:user][:name])
       redirect_to("/user/#{@user.id}/edit_menu/final_check")
     else
       @user = User.new
