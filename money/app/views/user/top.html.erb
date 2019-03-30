@@ -3,10 +3,35 @@
   <div class="top message">
     <% @user_name = User.find_by(id: session[:user_id])%>
     <% user_tomonth_target = User.find_by(id: session[:user_id]) %>
-
     <% date = Date.today %>
     <% if user_tomonth_target.money_limit && user_tomonth_target.money_limit_day && date < user_tomonth_target.money_limit_day%>
       <h1>今使える金額は<%=@user_name.money_limit%>円</h1>
+      <% if @warning %>
+      <div class="warning">
+        <%= @warning %>
+      </div> 
+      <% end %>
+      <script>
+      window.onload = function(){
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        if (gon.percentage >= 51){
+          context.fillStyle = "green";
+        }
+        else if(gon.percentage < 51 && gon.percentage　>= 26){
+          context.fillStyle = "yellow";
+        }
+        else{
+          context.fillStyle = "red";
+        }
+        context.fillRect(0, 0, 5 * gon.percentage, 50);
+      }
+      </script>
+      <canvas id = "canvas" width = "500" height = "35" style = "border:2px solid #000;background-color: brack;"></canvas>
+      <% if @over > 0%>
+        <h3>+<%=@over%>円</h3>
+      <%end%>
+      <p></p>
       <%=date%>
       <%=user_tomonth_target.money_limit_day%>
       <%=date < user_tomonth_target.money_limit_day%>

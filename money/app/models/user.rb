@@ -1,12 +1,14 @@
 class User < ApplicationRecord
-    validates :name, {presence: true}
-    validates :email, {uniqueness: true,presence: true}
+    validates :name, {presence: true, length: { maximum: 20}}
+    validates :email, {uniqueness: true, presence: true}
     validates :o_password, {presence: true}
     validates :re_password, {presence: true}
-    validates :question, {presence: true}
-    validates :answer, {presence: true}
+    validates :question, {presence: true, length: { maximum: 140}}
+    validates :answer, {presence: true, length: { maximum: 140}}
     validates :money_limit, {presence: true}
     validates :money_limit_day, {presence: true}
     validates :income, {presence: true}
     validates :money_limit_origin, {presence: true}
+    validates :money_limit_day_origin, {presence: true}
+    has_secure_password
 end

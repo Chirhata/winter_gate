@@ -21,14 +21,19 @@ class ApplicationController < ActionController::Base
     end
 
     def ban_unset_target
-        if @login_user.money_limit_day >= @date
+        if @login_user.money_limit_day <= @date
             redirect_to("/user/#{@login_user.id}/top")
         end
     end
 
     def ban_set_target
-        if @login_user.money_limit_day < @date
+        if @login_user.money_limit_day > @date
             redirect_to("/user/#{@login_user.id}/top")
         end
+    end
+
+    def delete_session_for_change_password
+        session[:user_data_for_mailcheck] = nil
+        session[:user_data_for_answercheck] = nil
     end
 end
