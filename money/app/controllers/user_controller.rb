@@ -140,7 +140,7 @@ class UserController < ApplicationController
       render("/user/your_password")
       return
     else
-      if params[:user][:o_password].length > 0 || params[:user][:re_password].length > 0
+      if params[:user][:o_password].length <= 0 || params[:user][:re_password].length <= 0
         @ans = User.new
         render("/user/your_password")
         return

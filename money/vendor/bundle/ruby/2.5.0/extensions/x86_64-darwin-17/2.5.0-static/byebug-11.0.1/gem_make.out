@@ -1,0 +1,19 @@
+current directory: /Users/flag/money/vendor/bundle/ruby/2.5.0/gems/byebug-11.0.1/ext/byebug
+/Users/flag/.rbenv/versions/2.5.0/bin/ruby -r ./siteconf20190330-31184-zlmbvw.rb extconf.rb
+creating Makefile
+
+current directory: /Users/flag/money/vendor/bundle/ruby/2.5.0/gems/byebug-11.0.1/ext/byebug
+make "DESTDIR=" clean
+
+current directory: /Users/flag/money/vendor/bundle/ruby/2.5.0/gems/byebug-11.0.1/ext/byebug
+make "DESTDIR="
+compiling breakpoint.c
+compiling byebug.c
+compiling context.c
+compiling locker.c
+compiling threads.c
+linking shared-object byebug/byebug.bundle
+
+current directory: /Users/flag/money/vendor/bundle/ruby/2.5.0/gems/byebug-11.0.1/ext/byebug
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 byebug.bundle ./.gem.20190330-31184-qw98l6/byebug

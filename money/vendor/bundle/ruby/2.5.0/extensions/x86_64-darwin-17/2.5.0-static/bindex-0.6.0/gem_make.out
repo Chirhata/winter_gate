@@ -1,0 +1,15 @@
+current directory: /Users/flag/money/vendor/bundle/ruby/2.5.0/gems/bindex-0.6.0/ext/skiptrace
+/Users/flag/.rbenv/versions/2.5.0/bin/ruby -r ./siteconf20190330-31184-gygxg1.rb extconf.rb
+creating Makefile
+
+current directory: /Users/flag/money/vendor/bundle/ruby/2.5.0/gems/bindex-0.6.0/ext/skiptrace
+make "DESTDIR=" clean
+
+current directory: /Users/flag/money/vendor/bundle/ruby/2.5.0/gems/bindex-0.6.0/ext/skiptrace
+make "DESTDIR="
+compiling cruby.c
+linking shared-object skiptrace/cruby.bundle
+
+current directory: /Users/flag/money/vendor/bundle/ruby/2.5.0/gems/bindex-0.6.0/ext/skiptrace
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 cruby.bundle ./.gem.20190330-31184-tt6lbx/skiptrace
