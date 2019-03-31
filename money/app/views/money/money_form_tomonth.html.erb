@@ -9,10 +9,7 @@ require "active_support/time"
     </div> 
     <% end %>
     <%= form_for @user,url:{action: :tomonth_target} do |m|%>
-      <%= javascript_include_tag 'jquery-1.4.2.min' %>
-      <%= javascript_include_tag 'jquery-ui-1.8.custom.min.js' %>
-      <%= javascript_include_tag 'jquery.ui.datepicker-ja.js' %>
-      <%= m.date_select :money_limit_day,  id = "datepicker"%>
+      <%= m.text_field :money_limit_day, class: "datepicker"%>
       <script type="text/javascript">
         $(function() {
           $("#datepicker").datepicker();
