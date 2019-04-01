@@ -1,6 +1,8 @@
 require "active_support/time"
 <div class="money_form_tomonth top-main">
   <div class="money_form_tomonth message">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <% time = Time.now %>
     <h1>今月はいつまでにいくら残しますか？</h1>
     <% if @error_message %>
@@ -9,10 +11,12 @@ require "active_support/time"
     </div> 
     <% end %>
     <%= form_for @user,url:{action: :tomonth_target} do |m|%>
-      <%= m.text_field :money_limit_day, class: "datepicker"%>
+      <%= m.text_field :money_limit_day, class: "datepicker", readonly: true%>
       <script type="text/javascript">
-        $(function() {
-          $("#datepicker").datepicker();
+	      $(function() {
+          $(".datepicker").datepicker({
+            dateFormat: 'yymmdd',
+          });
         });
       </script>
       <h2>いくら残すかを設定してください。</h2>

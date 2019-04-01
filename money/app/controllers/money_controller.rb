@@ -14,38 +14,46 @@ class MoneyController < ApplicationController
 
   def tomonth_target
     @user = User.find_by(id: session[:user_id])
-    @money_limit_day_y = params[:user]["money_limit_day(1i)"].to_i
-    @money_limit_day_m = params[:user]["money_limit_day(2i)"].to_i
-    @money_limit_day_d = params[:user]["money_limit_day(3i)"].to_i
+    target_day = params[:user][:money_limit_day]
     @money_limit = params[:user][:money_limit].to_i
     @money_limit -= params[:user][:income].to_i
     time = Time.now
-    if time.year > @money_limit_day_y || time.month > @money_limit_day_m
+    if time.month <10
+      if time.day < 10
+        today = "#{time.year}0#{time.month}0#{time.day}".to_i
+      else
+        today = "#{time.year}0#{time.month}#{time.day}".to_i
+      end
+    else
+      if time.day < 10
+        today = "#{time.year}#{time.month}0#{time.day}".to_i
+      else
+        today = "#{time.year}#{time.month}#{time.day}".to_i
+      end
+    end
+    target_day_length = target_day.length
+    p target_day[0,target_day_length - 4].to_i
+    p target_day[target_day_length - 4,2].to_i
+    p target_day[target_day_length - 2,2].to_i
+    if today > target_day.to_i
       @user = User.new
       @error_message = "目標日は今日より後の日付に設定してください。"
       render("/money/money_form_tomonth")
       return
     else
-      if time.day >= @money_limit_day_d && time.month == @money_limit_day_m
+      if @money_limit <= 0
         @user = User.new
-        @error_message = "目標日は今日より後の日付に設定してください。"
+        @error_message = "そんな計画で大丈夫か？大丈夫じゃない、問題だ。"
         render("/money/money_form_tomonth")
         return
       else
-        if @money_limit <= 0
-          @user = User.new
-          @error_message = "そんな計画で大丈夫か？大丈夫じゃない、問題だ。"
-          render("/money/money_form_tomonth")
-          return
-        else
-          @user.money_limit_day_origin = Date.today
-          @user.money_limit_day = Time.zone.local(params[:user]["money_limit_day(1i)"].to_i, params[:user]["money_limit_day(2i)"].to_i, params[:user]["money_limit_day(3i)"].to_i)
-          @user.money_limit = @money_limit
-          @user.income = params[:user][:income].to_i
-          @user.money_limit_origin = @money_limit
-          @user.save
-          redirect_to("/user/#{@user.id}/top")
-        end
+        @user.money_limit_day_origin = Date.today
+        @user.money_limit_day = Time.zone.local(target_day[0,target_day_length - 4].to_i, target_day[target_day_length - 4,2].to_i, target_day[target_day_length - 2,2].to_i)
+        @user.money_limit = @money_limit
+        @user.income = params[:user][:income].to_i
+        @user.money_limit_origin = @money_limit
+        @user.save
+        redirect_to("/user/#{@user.id}/top")
       end
     end
   end
@@ -87,10 +95,22 @@ class MoneyController < ApplicationController
 
   def edit_target_save
     @user = User.find_by(id: session[:user_id])
-    @money_limit_day_y = params[:user]["money_limit_day(1i)"].to_i
-    @money_limit_day_m = params[:user]["money_limit_day(2i)"].to_i
-    @money_limit_day_d = params[:user]["money_limit_day(3i)"].to_i
+    target_day = params[:user][:money_limit_day]
     time = Time.now
+    if time.month <10
+      if time.day < 10
+        today = "#{time.year}0#{time.month}0#{time.day}".to_i
+      else
+        today = "#{time.year}0#{time.month}#{time.day}".to_i
+      end
+    else
+      if time.day < 10
+        today = "#{time.year}#{time.month}0#{time.day}".to_i
+      else
+        today = "#{time.year}#{time.month}#{time.day}".to_i
+      end
+    end
+    target_day_length = target_day.length
     if params[:user][:money_limit].empty? != true
       if params[:user][:income].empty? != true
         @user.money_limit = (params[:user][:money_limit].to_i - (@user.money_limit_origin + @user.income)) - (params[:user][:income].to_i - @user.income.to_i) + @user.money_limit
@@ -112,33 +132,13 @@ class MoneyController < ApplicationController
         end
       end
     end
-    if params[:user][:income].empty? != true
-      if params[:user][:money_limit].empty? == true
-        @user.money_limit = @user.money_limit - (params[:user][:income].to_i - @user.income)
-        @user.money_limit_origin = @user.money_limit_origin - (params[:user][:income].to_i - @user.income)
-        if @user.money_limit <= 0
-          @user = User.new
-          @error_message = "そんな計画で大丈夫か？大丈夫じゃない、問題だ。"
-          render("/money/edit_target")
-          return
-        end
-      end
-      @user.income = params[:user][:income].to_i
-    end
-    if time.year > @money_limit_day_y || time.month > @money_limit_day_m
+    if today > target_day.to_i
       @user = User.new
       @error_message = "目標日は今日より後の日付に設定してください。"
-      render("/money/edit_target")
+      render("/money/money_form_tomonth")
       return
     else
-      if time.day >= @money_limit_day_d && time.month == @money_limit_day_m
-        @user = User.new
-        @error_message = "目標日は今日より後の日付に設定してください。"
-        render("/money/edit_target")
-        return
-      else
-        @user.money_limit_day = Time.zone.local(params[:user]["money_limit_day(1i)"].to_i, params[:user]["money_limit_day(2i)"].to_i, params[:user]["money_limit_day(3i)"].to_i)
-      end
+      @user.money_limit_day = Time.zone.local(target_day[0,target_day_length - 4].to_i, target_day[target_day_length - 4,2].to_i, target_day[target_day_length - 2,2].to_i)
     end
     if @user.save
       redirect_to("/user/#{@user.id}/top")
