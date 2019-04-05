@@ -9,6 +9,7 @@
     <label>
     <%= m.radio_button :income_or_supend, "収入" %> 収入 </label>
     <label><%= m.radio_button :income_or_supend, "支出" %> 支出 </label>
+    <label><%= m.radio_button :income_or_supend, "支出(固定)  " %> 支出(固定) </label>
     <h2>金額を入力してください。</h2>
     <%=m.number_field :income_and_spending,{:min => 1, :max => 99999999}%>
     <h2>用途を入力してください。</h2>

@@ -1,27 +1,21 @@
 require "active_support/time"
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <div class="money_form_tomonth top-main">
   <div class="money_form_tomonth message">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <% time = Time.now %>
-    <h1>今月はいつまでにいくら残しますか？</h1>
+    <h1>給料日を入力してください</h1>
     <% if @error_message %>
     <div class="error_message">
       <%= @error_message %>
     </div> 
     <% end %>
     <%= form_for @user,url:{action: :tomonth_target} do |m|%>
-      <%= m.text_field :money_limit_day, class: "datepicker", readonly: true%>
-      <script type="text/javascript">
-	      $(function() {
-          $(".datepicker").datepicker({
-            dateFormat: 'yymmdd',
-          });
-        });
-      </script>
-      <h2>いくら残すかを設定してください。</h2>
+      <%= javascript_include_tag("datepicker") %>
+      <%= m.text_field :money_limit_day, class: "datepicker", readonly: true ,value: @target_day%>
+      <h2>今月の給料を入力してください。</h2>
       <%=m.number_field :money_limit,{:min => 1, :max =>99999999}%>
-      <h2>予測される今月の支出を入力してください。</h2>
+      <h2>今月残す金額を入力してください。</h2>
       <%=m.number_field :income,{:min => 1, :max =>99999999}%>
       <p></p>
       <%=m.submit '送信'%>

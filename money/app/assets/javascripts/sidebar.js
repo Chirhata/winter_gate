@@ -4,8 +4,6 @@
 //= require action_cable
 //= require_self
 //= require_tree ./channels
-$(document).ready(function() {
-  $(".datepicker").datepicker({
-    dateFormat: 'yymmdd',
-  });
+$(document).ready(function(){
+  $('.sidenav').sidenav();
 });

@@ -9,7 +9,43 @@ class MoneyController < ApplicationController
   end
 
   def money_form_tomonth
-    @user = User.new
+    @user = User.find_by(id: session[:user_id])
+    target_day = @user.money_limit_day
+    time = Time.now
+    if time.day >= target_day.day
+      if time.month == 12
+        if Date.valid_date?(time.year + 1, 1, target_day.day) == true
+          date_set = Date.new(time.year + 1, 1, target_day.day)
+        else
+          date_set = Date.new(time.year + 1, 1, 25)
+        end
+      else
+        if Date.valid_date?(time.year, time.month + 1, target_day.day) == true
+          date_set = Date.new(time.year, time.month + 1, target_day.day)
+        else
+          date_set = Date.new(time.year, time.month + 1, 25)
+        end
+      end
+    else
+      if Date.valid_date?(time.year, time.month, target_day.day) == true
+        date_set = Date.new(time.year, time.month, target_day.day)
+      else
+        date_set = Date.new(time.year, time.month, 25)
+      end
+    end
+    if date_set.month <10
+      if date_set.day < 10
+        @target_day = "#{date_set.year}0#{date_set.month}0#{date_set.day}".to_i
+      else
+        @target_day = "#{date_set.year}0#{date_set.month}#{date_set.day}".to_i
+      end
+    else
+      if date_set.day < 10
+        @target_day = "#{date_set.year}#{date_set.month}0#{date_set.day}".to_i
+      else
+        @target_day = "#{date_set.year}#{date_set.month}#{date_set.day}".to_i
+      end
+    end
   end
 
   def tomonth_target
@@ -132,13 +168,15 @@ class MoneyController < ApplicationController
         end
       end
     end
-    if today > target_day.to_i
-      @user = User.new
-      @error_message = "目標日は今日より後の日付に設定してください。"
-      render("/money/money_form_tomonth")
-      return
-    else
-      @user.money_limit_day = Time.zone.local(target_day[0,target_day_length - 4].to_i, target_day[target_day_length - 4,2].to_i, target_day[target_day_length - 2,2].to_i)
+    if params[:user][:money_limit_day].empty? != true
+      if today > target_day.to_i
+        @user = User.new
+        @error_message = "目標日は今日より後の日付に設定してください。"
+        render("/money/money_form_tomonth")
+        return
+      else
+        @user.money_limit_day = Time.zone.local(target_day[0,target_day_length - 4].to_i, target_day[target_day_length - 4,2].to_i, target_day[target_day_length - 2,2].to_i)
+      end
     end
     if @user.save
       redirect_to("/user/#{@user.id}/top")

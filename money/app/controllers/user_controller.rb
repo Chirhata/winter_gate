@@ -14,7 +14,12 @@ class UserController < ApplicationController
   def sign_in
     @error_message = nil
     date = Date.today
-    @user_data = User.new(name: params[:name], email: params[:email], question: params[:question], answer: params[:answer], money_limit: 0, money_limit_day: date.yesterday, income: 0, money_limit_origin: 0, money_limit_day_origin: date.yesterday)
+    if date.month == 1
+      date_set = Date.new(date.year - 1, date.month - 1, 25)
+    else
+      date_set = Date.new(date.year, date.month - 1, 25)
+    end
+    @user_data = User.new(name: params[:name], email: params[:email], question: params[:question], answer: params[:answer], money_limit: 0, money_limit_day: date_set, income: 0, money_limit_origin: 0, money_limit_day_origin: date_set)
     @user_data.password = params[:o_password]
     @email = User.find_by(email: params[:email])
     if @user_data.save
@@ -180,6 +185,8 @@ class UserController < ApplicationController
     end
     @over = @user.money_limit - @user.money_limit_origin
     gon.percentage = (@user.money_limit / @user.money_limit_origin.to_f) * 100
+    p 11111
+    p gon.percentage
     @money = MoneyManagement.new
   end
 

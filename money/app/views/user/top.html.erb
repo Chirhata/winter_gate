@@ -12,6 +12,8 @@
       </div> 
       <% end %>
       <script>
+      console.log('aaaaaaaa');
+      console.log(gon.percentage);
       window.onload = function(){
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
@@ -27,7 +29,7 @@
         context.fillRect(0, 0, 5 * gon.percentage, 50);
       }
       </script>
-      <canvas id = "canvas" width = "500" height = "35" style = "border:2px solid #000;background-color: brack;"></canvas>
+      <canvas id = "canvas" width = "500" height = "35" style = "border:2px solid #000;background-color: blue;"></canvas>
       <% if @over > 0%>
         <h3>+<%=@over%>円</h3>
       <%end%>

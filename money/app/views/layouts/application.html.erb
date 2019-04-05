@@ -10,18 +10,30 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
 
   <body>
     <header>
       <div class="header-logo">
+      <script type="text/javascript"></script>      
       <% @user_name = User.find_by(id: session[:user_id])%>
         <%if @user_name%>
           <%= link_to(@user_name.name, "/user/#{@user_name.id}/top") %>
         <%else%>
           <%= link_to("トップページ", "/home/top") %>
         <%end%>
-      </div>
+        <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul id="slide-out" class="sidenav">
+          <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+          <li><a href="#!">Second Link</a></li>
+          <li><div class="divider"></div></li>
+          <li><a class="subheader">Subheader</a></li>
+          <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+        </ul>
       <ul class="header-menus">
         <li>
             <%= link_to("サービス概要", "/home/about") %>

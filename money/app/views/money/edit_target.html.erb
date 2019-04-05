@@ -1,7 +1,6 @@
 require "active_support/time"
 <div class="edit_target top-main">
   <div class="edit_target message">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <% time = Time.now %>
     <h1>目標などの変更フォーム</h1>
@@ -12,18 +11,12 @@ require "active_support/time"
     </div> 
     <% end %>
     <%= form_for @user,url:{action: :edit_target_save} do |m|%>
-      <h2>日付を入力してください。</h2>
+      <%= javascript_include_tag("datepicker") %>
+      <h2>給料日を入力してください。</h2>
       <%= m.text_field :money_limit_day, class: "datepicker", readonly: true%>
-      <script type="text/javascript">
-	      $(function() {
-          $(".datepicker").datepicker({
-            dateFormat: 'yymmdd',
-          });
-        });
-      </script>
-      <h2>いくら残すかを設定してください。</h2>
+      <h2>給料を入力してください。</h2>
       <%=m.number_field :money_limit,{:min => 1, :max =>99999999}%>
-      <h2>予測される今月の支出を入力してください。</h2>
+      <h2>いくら残したいか入力してください。</h2>
       <%=m.number_field :income,{:min => 1, :max =>99999999}%>
       <p></p>
       <%=m.submit '送信'%>
