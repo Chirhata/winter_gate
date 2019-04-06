@@ -137,8 +137,6 @@ class UserController < ApplicationController
   end
 
   def change_password
-    p "----"
-    p @user
     @ans = User.find_by(id: session[:user_data_for_answercheck])
     if params[:user][:o_password] != params[:user][:re_password]
       @ans = User.new
@@ -185,8 +183,6 @@ class UserController < ApplicationController
     end
     @over = @user.money_limit - @user.money_limit_origin
     gon.percentage = (@user.money_limit / @user.money_limit_origin.to_f) * 100
-    p 11111
-    p gon.percentage
     @money = MoneyManagement.new
   end
 

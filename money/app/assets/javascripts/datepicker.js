@@ -4,7 +4,7 @@
 //= require action_cable
 //= require_self
 //= require_tree ./channels
-$(document).ready(function() {
+$(document).ready(function(){
   $(".datepicker").datepicker({
     dateFormat: 'yymmdd',
   });

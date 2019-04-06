@@ -4,6 +4,8 @@
 //= require action_cable
 //= require_self
 //= require_tree ./channels
-$(document).ready(function(){
-  $('.sidenav').sidenav();
-});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll(".sidenav");
+    M.Sidenav.init(elems, {});
+  });
