@@ -11,11 +11,11 @@
   <div class="login form">
   <%=form_tag("/user/login_check") do%>
     <p>メールアドレス</p>
-    <input name="email">
+    <input name="email" type="email" class="validate" size="30">
     <p>パスワード</p>
-    <input name="o_password" type="password">
+    <input name="o_password" type="password" class="validate">
     <p></p>
-    <input type="submit" value="ログイン">
+    <a class="btn waves-effect">ログイン</a>
   <%end%>
   </div>
   <div class="login question_link">
