@@ -15,28 +15,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
   </head>
 
   <body>
     <header>
+      <% require "active_support/time" %>
       <div class="header-logo">
-      <% @user_name = User.find_by(id: session[:user_id])%>
+        <% date = Date.today %>
+        <% @user_name = User.find_by(id: session[:user_id])%>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+        <style>
+          .sidenav-overlay {
+            left: 300px;
+          }
+        </style>
         <%= javascript_include_tag("sidebar") %>
-        <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <%= javascript_include_tag("dropdown") %>
+        <a data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <%if @user_name%>
           <%= link_to(@user_name.name, "/user/#{@user_name.id}/top") %>
         <%else%>
           <%= link_to("トップページ", "/home/top") %>
         <%end%>
         <ul id="slide-out" class="sidenav">
-          <li class="white-text">
+          <li>
             <%= link_to("サービス概要", "/home/about") %>
           </li>
           <li>
               <%= link_to("利用規約", "/home/rule") %>
           </li>
           <%if session[:user_id]%>
+            <% if @user_name.money_limit && @user_name.money_limit_day && date < @user_name.money_limit_day%>
+              <li>
+                <%= link_to("出資入力フォーム", "/money/#{@user_name.id}/form") %>
+              </li>
+              <li>
+                <%= link_to("履歴", "/money/#{@user_name.id}/log") %>
+              </li>
+              <li>
+                <%= link_to("目標などの変更", "/money/#{@user_name.id}/edit_target") %>
+              </li>            
+            <%end%>
+            <style>
+              .dropdown-trigger{
+                padding: 0px 0px 0px 30px;
+                color: black;
+                font-size:14px;
+                width: 300px;
+              }
+            </style>
+            <a class="dropdown-trigger" data-target="dropdown1">ユーザー設定の変更</a>
+            <ul id='dropdown1' class='dropdown-content'>
+              <li>
+                <%= link_to("名前変更", "/user/#{@user_name.id}/edit_menu/name") %>
+              </li> 
+              <li>
+                <%= link_to("パスワード変更", "/user/#{@user_name.id}/edit_menu/password") %>
+              </li> 
+              <li>
+                <%= link_to("秘密の質問変更", "/user/#{@user_name.id}/edit_menu/question") %>
+              </li> 
+              <li>
+                <%= link_to("アカウント削除", "/user/#{@user_name.id}/edit_menu/delete_account") %>
+              </li> 
+            </ul>
             <li>
               <%= link_to("ログアウト", "/user/logout",{method: :post}) %>
             </li>
@@ -46,6 +88,7 @@
             </li>
           <%end%>
         </ul>
+      </div>
     </header>
     <%= yield %>
   </body>

@@ -140,6 +140,7 @@ class UserController < ApplicationController
     @ans = User.find_by(id: session[:user_data_for_answercheck])
     if params[:user][:o_password] != params[:user][:re_password]
       @ans = User.new
+      @error_message = "入力した二つのパスワードが一致しません。"
       render("/user/your_password")
       return
     else

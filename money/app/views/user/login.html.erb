@@ -1,7 +1,7 @@
 <div class="login top-main">
   <div class="login message">
     <h1>メールアドレスとパスワードを入力してください</h1>
-    <h1><%= link_to("新規登録はこちら", "/user/join") %></h1>
+    <h2><%= link_to("新規登録はこちら", "/user/join") %></h2>
   </div>
   <% if @error_message %>
     <div class="error_message">
@@ -11,14 +11,14 @@
   <div class="login form">
   <%=form_tag("/user/login_check") do%>
     <p>メールアドレス</p>
-    <input name="email" type="email" class="validate" size="30">
+    <input name="email" type="email" class="validate" style="width:400px; height:20px;">
     <p>パスワード</p>
-    <input name="o_password" type="password" class="validate">
+    <input name="o_password" type="password" class="validate" style="width:300px; height:20px;">
     <p></p>
-    <a class="btn waves-effect">ログイン</a>
+    <input type="submit" value="ログイン" style="width:200px; height:50px;">
   <%end%>
   </div>
   <div class="login question_link">
-    <h1><%= link_to("パスワードを忘れた方はこちら", "/user/question") %></h1>
+    <h2><%= link_to("パスワードを忘れた方はこちら", "/user/question") %></h2>
   </div>
 </div>

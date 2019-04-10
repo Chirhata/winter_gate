@@ -35,16 +35,12 @@
       <%=date%>
       <%=user_tomonth_target.money_limit_day%>
       <%=date < user_tomonth_target.money_limit_day%>
-      <%= link_to("出資入力フォーム", "/money/#{@user_name.id}/form") %>
-      <%= link_to("履歴", "/money/#{@user_name.id}/log") %>
-      <%= link_to("目標などの変更", "/money/#{@user_name.id}/edit_target") %>
     <%else%>
       <h1>今月分の目標額を設定しましょう。</h1>
       <%=date%>
       <%=user_tomonth_target.money_limit_day%>
       <%=date < user_tomonth_target.money_limit_day%>
-      <%= link_to("今月分の目標額設定フォーム", "/money/#{@user_name.id}/form_tomonth") %>
+      <%= link_to("設定する", "/money/#{@user_name.id}/form_tomonth") %>
     <%end%>
-    <%= link_to("ユーザー設定の変更", "/user/#{@user_name.id}/edit_menu") %>
   </div>
 </div>

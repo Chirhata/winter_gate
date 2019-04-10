@@ -19,6 +19,7 @@
     color: white;
     font-size: 25px;
     line-height: 64px;
+    z-index: 100;
 }
 .header-menus {
     float: right;
@@ -32,8 +33,6 @@
     font-size: 15px;
     padding-left: 15px;
 }
-
-
 ////////////top
 .top-main {
     padding: 100px 0px 100px 0px;
@@ -45,9 +44,11 @@
     height: auto;
     min-height: 80%;
     color: white;
-    background-color: red;
+    background-color: #181818;
+    z-index: -1;
     background-size: cover;
 }
 .top-message {
     font-size: 30px;
 }
+

@@ -6,6 +6,6 @@
 //= require_tree ./channels
 
 document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll(".sidenav");
+    const elems = document.querySelectorAll(".sidenav");
     M.Sidenav.init(elems, {});
   });

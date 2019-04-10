@@ -1,7 +1,7 @@
 <div class="join top-main">
   <div class="join message">
     <h1>新規ユーザー登録フォーム</h1>
-    <h2>新規登録された場合、<%= link_to("利用規約", "/home/rule") %>に同意したものとみなします。</h2>
+    <h3>新規登録された場合、<%= link_to("利用規約", "/home/rule") %>に同意したものとみなします。</h3>
     <h2><%= link_to(" ログインはこちら", "/user/login") %></h2>
   </div>
   <% if @error_message %>
@@ -13,34 +13,34 @@
     <%=form_tag("/user/sign_in") do%>
       <%if @user_data%>
         <p>ユーザー名</p>
-        <input name="name" value="<%=@user_data.name%>">
+        <input name="name" value="<%=@user_data.name%>" type="text" class="validate" style="width:300px; height:20px;">
         <p>メールアドレス</p>
-        <input name="email" value="<%=@user_data.email%>">
+        <input name="email" value="<%=@user_data.email%>" type="email" class="validate" style="width:300px; height:20px;">
         <p>パスワード</p>
-        <input name="o_password" type="password">
+        <input name="o_password" type="password" class="validate" style="width:200px; height:20px;">
         <p>確認のため、もう一度入力してください</p>
-        <input name="re_password" type="password">
+        <input name="re_password" type="password" class="validate" style="width:200px; height:20px;">
         <p>秘密の質問</p>
-        <input name="question" value="<%=@user_data.question%>">
+        <input name="question" value="<%=@user_data.question%>" type="text" class="validate" style="width:400px; height:20px;">
         <p>秘密の質問の答え</p>
-        <input name="answer" value="<%=@user_data.answer%>">
+        <input name="answer" value="<%=@user_data.answer%>" type="text" class="validate" style="width:400px; height:20px;">
         <p></p>
         <input type="submit" value="登録">
       <%else%>
         <p>ユーザー名</p>
-        <input name="name">
+        <input name="name" type="text" class="validate" style="width:200px; height:20px;"> 
         <p>メールアドレス</p>
-        <input name="email">
+        <input name="email" type="email" class="validate" style="width:300px; height:20px;">
         <p>パスワード</p>
-        <input name="o_password" type="password">
+        <input name="o_password" type="password" class="validate" style="width:200px; height:20px;">
         <p>確認のため、もう一度入力してください</p>
-        <input name="re_password" type="password">
+        <input name="re_password" type="password" class="validate" style="width:200px; height:20px;">
         <p>秘密の質問</p>
-        <input name="question">
+        <input name="question" type="text" class="validate" style="width:400px; height:20px;">
         <p>秘密の質問の答え</p>
-        <input name="answer">
+        <input name="answer" type="text" class="validate" style="width:400px; height:20px;">
         <p></p>
-        <input type="submit" value="登録">
+        <input type="submit" value="登録" style="width:200px; height:50px;">
       <%end%>
     <%end%>
   </div>

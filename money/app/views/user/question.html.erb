@@ -7,7 +7,11 @@
       </div>
     <% end %>
     <%= form_for @user,url:{action: :mail_check} do |u|%>
-      <%=u.text_field :email%>
+      <div class="row">
+        <div class="input-field col s10 push-s1">
+          <%=u.text_field :email , :type=>"email"%>
+        </div>
+      </div>
       <p></p>
       <%=u.submit '送信'%>
     <% end %>
