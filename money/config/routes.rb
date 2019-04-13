@@ -11,7 +11,6 @@ Rails.application.routes.draw do
   get "user/:id/edit_menu/question"=>"user#edit_question"
   get "user/:id/edit_menu/name"=>"user#edit_name"
   get "user/:id/edit_menu/password"=>"user#edit_password"
-  get "user/:id/edit_menu"=>"user#edit_menu"
   get "user/:id/top"=>"user#top"
 
   get "money/:id/form"=>"money#money_form"
